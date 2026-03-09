@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BEST PICK MLBB</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #0f1015; color: white; text-align: center; margin: 0; padding: 20px; }
+        .container { max-width: 900px; margin: auto; background: #1a1c23; padding: 20px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        
+        /* Título Principal */
+        .main-title {
+            font-size: 3rem;
+            font-weight: 900;
+            margin-bottom: 20px;
+            background: linear-gradient(to bottom, #fff 20%, #ffd700 50%, #b8860b 80%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.3));
+        }
+
+        /* Slots do Time Inimigo */
+        .slots { display: flex; justify-content: center; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
+        .slot { width: 80px; height: 80px; border: 2px dashed #444; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 10px; overflow: hidden; background: #252830; transition: 0.3s; }
+        .slot img { width: 100%; height: 100%; object-fit: cover; }
+        .slot.filled { border-style: solid; border-color: #ff4444; box-shadow: 0 0 15px rgba(255, 68, 68, 0.3); }
+
+        /* Busca */
+        #hero-search { padding: 15px; width: 90%; border-radius: 8px; border: 1px solid #444; background: #0f1015; color: white; margin-bottom: 15px; outline: none; font-size: 16px; }
+        #hero-search:focus { border-color: #007bff; box-shadow: 0 0 10px rgba(0, 123, 255, 0.5); }
+
+        /* Grade de Heróis */
+        .hero-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 12px; border: 1px solid #333; padding: 15px; height: 400px; overflow-y: auto; background: #12141a; border-radius: 10px; }
+        .hero-card { cursor: pointer; padding: 10px; background: #252830; border-radius: 8px; font-size: 12px; transition: 0.2s; border: 1px solid transparent; }
+        .hero-card:hover { background: #3d4250; transform: translateY(-5px); border-color: #007bff; }
+        .hero-card img { width: 60px; height: 60px; border-radius: 50%; display: block; margin: 0 auto 8px; border: 2px solid #444; }
+
+        /* Sugestões */
+        .suggestions { margin-top: 30px; padding: 20px; background: #12141a; border-radius: 12px; border: 1px solid #333; text-align: left; }
+        .counter-card { background: #252830; margin-bottom: 15px; border-radius: 10px; border: 1px solid #444; overflow: hidden; }
+        .counter-header { background: #333; padding: 10px; display: flex; align-items: center; gap: 10px; border-bottom: 2px solid #ff4444; }
+        .counter-list { padding: 15px; display: flex; flex-wrap: wrap; gap: 12px; }
+        
+        /* Item Individual do Counter */
+        .counter-item { display: flex; align-items: center; gap: 10px; background: rgba(255,255,255,0.05); padding: 8px 15px; border-radius: 10px; border: 1px solid #444; }
+        .counter-item img { width: 50px; height: 50px; border-radius: 50%; border: 2px solid #4caf50; object-fit: cover; }
+        .counter-item span { color: gold; font-weight: bold; font-size: 14px; }
+
+        button { margin-top: 20px; padding: 12px 30px; cursor: pointer; background: #c62828; color: white; border: none; border-radius: 8px; font-weight: bold; text-transform: uppercase; transition: 0.3s; }
+        button:hover { background: #ff4444; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1 class="main-title">BEST PICK MLBB</h1>
+    
+    <p style="color: #888; margin-bottom: 10px;">SELEÇÃO DO TIME INIMIGO</p>
+    <div class="slots" id="enemy-team">
+        <div class="slot">Vazio</div>
+        <div class="slot">Vazio</div>
+        <div class="slot">Vazio</div>
+        <div class="slot">Vazio</div>
+        <div class="slot">Vazio</div>
+    </div>
+
+    <input type="text" id="hero-search" placeholder="🔍 Digite o nome do herói inimigo..." onkeyup="filterHeroes()">
+
+    <div class="hero-grid" id="hero-list"></div>
+
+    <button onclick="clearSelection()">Limpar Seleção</button>
+
+    <div class="suggestions">
+        <h3 style="text-align: center; color: #4caf50;">SUGESTÕES DE COUNTER</h3>
+        <div id="counter-results">Selecione heróis inimigos acima.</div>
+    </div>
+</div>
+
+<script>
+    // Banco de dados (Resumido para o exemplo - mantenha sua lista completa aqui)
+    const heroes = [
+                { name: "AAMON", image: "AAMON.png", role: "Assassino", counters: ["Saber", "Paquito", "X.Borg", "Gusion", "Hayabusa"] },
+        { name: "AKAI", image: "AKAI.png", role: "Tanque", counters: ["Diggie", "Odette", "Valir", "Valentina", "Karrie"] },
+        { name: "ALDOUS", image: "ALDOUS.png", role: "Lutador", counters: ["Akai", "Melissa", "Chou", "Kadita", "Kaja"] },
+        { name: "ALICE", image: "ALICE.png", role: "Mago/Tanque", counters: ["Chou", "Hanabi", "Aldous", "Harley", "Kaja"] },
+        { name: "GLOO", image: "GLOO.png", role: "Tanque", counters: ["YU ZHONG", "LANCELOT", "FARAMIS", "VEXANA", "WAN WAN"] },
+        { name: "MASHA", image: "MASHA.png", role: "Soldado", counters: ["BELERICK", "THAMUZ", "SUN", "LUNOX", "DYRROTH"] },
+        { name: "LOLITA", image: "LOLITA.png", role: "Tanque", counters: ["CHOU", "AKAI", "RUBY", "FRANCO", "EDITH"] },
+        { name: "KAJA", image: "KAJA.png", role: "Soldado/Suporte", counters: ["HELCURT", "GROCK", "AKAI", "MARTIS", "GUSION"] },
+        { name: "DIGGIE", image: "DIGGIE.png", role: "Suporte", counters: ["ALDOUS", "FRANCO", "FREDRINN", "CHIP", "ESMERALDA"] },
+        { name: "FLORYN", image: "FLORYN.png", role: "Suporte", counters: ["EUDORA", "KAGURA", "PAQUITO", "X.BORG", "NATAN"] },
+        { name: "HANABI", image: "HANABI.png", role: "Atirador", counters: ["NATALIA", "FANNY", "HAYABUSA", "NOLAN", "KARINA"] },
+        { name: "ESTES", image: "ESTES.png", role: "Suporte", counters: ["FREYA", "LUO YI", "BAXIA", "FANNY", "EUDORA"] },
+        { name: "SUN", image: "SUN.png", role: "Soldado", counters: ["X.BORG", "RUBY", "SILVANNA", "AULUS", "VALIR"] },
+        { name: "MINOTAURO", image: "MINOTAURO.png", role: "Tank/Suporte", counters: ["FREYA", "MOSKOV", "AURORA", "NANA", "ALPHA"] },
+        { name: "HILDA", image: "HILDA.png", role: "Soldado", counters: ["KARRIE", "DYRROTH", "VALIR", "THAMUZ", "BAXIA"] },
+        { name: "FREDRINN", image: "FREDRINN.png", role: "Tank", counters: ["X.BORG", "KARRIE", "VALIR", "DYRROTH", "THAMUZ"] },
+        { name: "BALMOND", image: "BALMOND.png", role: "Soldado", counters: ["DYRROTH", "LUNOX", "MOSKOV", "ALPHA", "FREYA"] },
+        { name: "SABER", image: "SABER.png", role: "Assassino", counters: ["BELERICK", "ARGUS", "DIGGIE", "VALIR", "HANABI"] },
+        { name: "ALICE", image: "ALICE.png", role: "Tank", counters: ["CHOU", "HANABI", "ALDOUS", "HARLEY", "KAJA"] },
+        { name: "NANA", image: "NANA.png", role: "MAGO", counters: ["SILVANNA", "CHOU", "LANCELOT", "HAYABUSA", "SUN"] },
+        { name: "MIYA", image: "MIYA.png", role: "Atirador", counters: ["NATALIA", "KARINA", "HAYABUSA", "CLINT", "FANNY"] },
+        { name: "ALUCARD", image: "ALUCARD.png", role: "Soldado", counters: ["EUDORA", "SABER", "FANNY", "ZHASK", "FREYA"] },
+        { name: "KARINA", image: "KARINA.png", role: "Assassino", counters: ["YIN", "RUBY", "AKAI", "NATALIA", "FRANCO"] },
+        { name: "AKAI", image: "AKAI.png", role: "Tank", counters: ["DIGGIE", "ODETTE", "VALIR", "VALENTINA", "KARRIE"] },
+        { name: "FRANCO", image: "FRANCO.png", role: "Tank", counters: ["CHOU", "FREYA", "VALIR", "MARTIS", "MINSITTHAR"] },
+        { name: "TIGREAL", image: "TIGREAL.png", role: "Tank", counters: ["NANA", "MARTIS", "EUDORA", "VALIR", "BAXIA"] },
+        { name: "BRUNO", image: "BRUNO.png", role: "Atirador", counters: ["MOSKOV", "ALPHA", "FREYA", "KARRIE", "KARINA"] },
+        { name: "CLINT", image: "CLINT.png", role: "Atirador", counters: ["EUDORA", "AKAI", "KARINA", "FANNY", "FREYA"] },
+        { name: "RAFAELA", image: "RAFAELA.png", role: "Suporte", counters: ["KARINA", "SABER", "HAYABUSA", "NATALIA", "MOSKOV"] },
+        { name: "EUDORA", image: "EUDORA.png", role: "Mago", counters: ["KAGURA", "SUN", "HAYABUSA", "KARINA", "FRANCO"] },
+        { name: "BANE", image: "BANE.png", role: "Mago", counters: ["CHOU", "VALIR", "MARTIS", "ALUCARD", "ALPHA"] },
+        { name: "FANNY", image: "FANNY.png", role: "Assassino", counters: ["PHOVEUS", "CHOU", "EUDORA", "FRANCO", "AKAI"] },
+        { name: "LAYLA", image: "LAYLA.png", role: "Atirador", counters: ["HAYABUSA", "SABER", "ALUCARD", "FANNY", "NATALIA"] },
+        { name: "ZILONG", image: "ZILONG.png", role: "Soldado", counters: ["HELCURT", "GATOTKACA", "FREYA", "BELERICK", "JAWHEAD"] },
+        { name: "FREYA", image: "FREYA.png", role: "Soldado", counters: ["MASHA", "MELISSA", "ESMERALDA", "MINSITTHAR", "PHOVEUS"] },
+        { name: "GORD", image: "GORD.png", role: "MAGO", counters: ["DYRROTH", "LOLITA", "YIN", "GUSION", "HAYABUSA"] },
+        { name: "NATALIA", image: "NATALIA.png", role: "Assassino", counters: ["SABER", "JAWHEAD", "HAYABUSA", "KHUFRA", "RAFAELA"] },
+        { name: "KAGURA", image: "KAGURA.png", role: "Mago", counters: ["GUSION", "ZILONG", "ALUCARD", "AKAI", "HAYABUSA"] },
+        { name: "HAYABUSA", image: "HAYABUSA.png", role: "Assassino", counters: ["SABER", "MINSITTHAR", "NATALIA", "KAJA", "CHOU"] },
+        { name: "SUN", image: "SUN.png", role: "Soldado", counters: ["X.BORG", "RUBY", "SILVANNA", "AULUS", "VALIR"] },
+        { name: "ALPHA", image: "ALPHA.png", role: "Soldado", counters: ["FREYA", "THAMUZ", "VALIR", "BAXIA", "MINSITTHAR"] },
+        { name: "RUBY", image: "RUBY.png", role: "Soldado", counters: ["X.BORG", "YIN", "PHOVEUS", "VALIR", "BAXIA"] },
+        { name: "YI SUN SHIN", image: "YI SUN SHIN.png", role: "Assassino", counters: ["KARINA", "EUDORA", "ALUCARD", "HAYABUSA", "FANNY"] },
+        { name: "CHOU", image: "CHOU.png", role: "Soldado", counters: ["SILVANNA", "MARTIS", "PHOVEUS", "MINSITTHAR", "DYRROTH"] },
+        { name: "JOHNSON", image: "JOHNSON.png", role: "Tank", counters: ["ESMERALDA", "ZHASK", "JAWHEAD", "DIGGIE", "GROCK"] },
+        { name: "CYCLOPS", image: "CYCLOPS.png", role: "Mago", counters: ["LING", "ALICE", "LANCELOT", "NATALIA", "HARLEY"] },
+        { name: "ESTES", image: "ESTES.png", role: "Suporte", counters: ["FREYA", "LUO YI", "BAXIA", "FANNY", "EUDORA"] },
+        { name: "HILDA", image: "HILDA.png", role: "Soldado", counters: ["KARRIE", "DYRROTH", "VALIR", "THAMUZ", "BAXIA"] },
+        { name: "MOSKOV", image: "MOSKOV.png", role: "Atirador", counters: ["CHOU", "SABER", "NATALIA", "BADANG", "LING"] },
+        { name: "VEXANA", image: "VEXANA.png", role: "Mago", counters: ["LYLIA", "CHOU", "NATALIA", "KAGURA", "KADITA"] },
+        { name: "ROGER", image: "ROGER.png", role: "Soldado/Atirador", counters: ["ALUCARD", "AURORA", "JAWHEAD", "MARTIS", "SILVANNA"] },
+        { name: "KARRIE", image: "KARRIE.png", role: "Atirador", counters: ["HAYABUSA", "KARINA", "CHOU", "LOLITA", "NATALIA"] },
+        { name: "GATOTKACA", image: "GATOTKACA.png", role: "Tank", counters: ["EUDORA", "KARRIE", "DYRROTH", "X.BORG", "YIN"] },
+        { name: "LAPU LAPU", image: "LAPU LAPU.png", role: "Soldado", counters: ["ESMERALDA", "YU ZHONG", "ARLOTT", "ALDOUS", "ALPHA"] },
+        { name: "IRITHEL", image: "IRITHEL.png", role: "Atirador", counters: ["NATALIA", "FREYA", "HELCURT", "KAGURA", "HAYABUSA"] },
+        { name: "GROCK", image: "GROCK.png", role: "Soldado", counters: ["HYLOS", "X.BORG", "HARLEY", "KARRIE", "DYRROTH"] },
+        { name: "URANUS", image: "URANUS.png", role: "TANK", counters: ["KARRIE", "ODETTE", "DYRROTH", "BAXIA", "VALIR"] },
+        { name: "MARTIS", image: "MARTIS.png", role: "Soldado", counters: ["PHOVEUS", "KAJA", "FRANCO", "MINSITTHAR", "BAXIA"] },
+        { name: "HARLEY", image: "HARLEY.png", role: "Mago", counters: ["JAWHEAD", "HAYABUSA", "SABER", "EUDORA", "VALE"] },
+        { name: "GUSION", image: "GUSION.png", role: "Assassino", counters: ["MINSITTHAR", "LOLITA", "LING", "KHUFRA", "SUN"] },
+        { name: "ANGELA", image: "ANGELA.png", role: "Suporte", counters: ["LANCELOT", "LESLEY", "HARLEY", "KAGURA", "NATALIA"] },
+        { name: "JAWHEAD", image: "JAWHEAD.png", role: "Soldado", counters: ["KAGURA", "SUN", "FANNY", "MARTIS", "VALIR"] },
+        { name: "LESLEY", image: "LESLEY.png", role: "Atirador", counters: ["ESMERALDA", "HARLEY", "HELCURT", "NATALIA", "KARINA"] },
+        { name: "VALIR", image: "VALIR.png", role: "Mago", counters: ["LANCELOT", "KAJA", "AKAI", "FRANCO", "HAYABUSA"] },
+        { name: "HELCURT", image: "HELCURT.png", role: "Assassino", counters: ["ARGUS", "HAYABUSA", "KARINA", "MINSITTHAR", "NATALIA"] },
+        { name: "ZHASK", image: "ZHASK.png", role: "Mago", counters: ["SABER", "NATALIA", "FANNY", "HAYABUSA", "CHOU"] },
+        { name: "HYLOS", image: "HYLOS.png", role: "Tank", counters: ["KARRIE", "VALIR", "LESLEY", "KIMMY", "BAXIA"] },
+        { name: "DIGGIE", image: "DIGGIE.png", role: "Suporte", counters: ["ALDOUS", "FRANCO", "FREDRINN", "CHIP", "ESMERALDA"] },
+        { name: "PHARSA", image: "PHARSA.png", role: "Mago", counters: ["FRANCO", "FANNY", "JAWHEAD", "HARLEY", "HELCURT"] },
+        { name: "ODETTE", image: "ODETTE.png", role: "Mago", counters: ["GUINEVERE", "CHOU", "KAGURA", "FANNY", "FRANCO"] },
+        { name: "ARGUS", image: "ARGUS.png", role: "Soldado", counters: ["SABER", "EUDORA", "AKAI", "NATALIA", "KAJA"] },
+        { name: "HANABI", image: "HANABI.png", role: "Atirador", counters: ["NATALIA", "FANNY", "HAYABUSA", "NOLAN", "KARINA"] },
+        { name: "CHANGE", image: "CHANGE.png", role: "Mago", counters: ["SABER", "CHOU", "LOLITA", "JAWHEAD", "BAXIA"] },
+        { name: "LANCELOT", image: "LANCELOT.png", role: "Assassino", counters: ["ALUCARD", "CHOU", "SABER", "ARGUS", "YIN"] },
+        { name: "KAJA", image: "KAJA.png", role: "Soldado/Suporte", counters: ["HELCURT", "GROCK", "AKAI", "MARTIS", "GUSION"] },
+        { name: "ALDOUS", image: "ALDOUS.png", role: "Soldado", counters: ["AKAI", "MELISSA", "CHOU", "KADITA", "KAJA"] },
+        { name: "CLAUDE", image: "CLAUDE.png", role: "Atirador", counters: ["POPOL E KUPA", "HAYABUSA", "SELENA", "FANNY", "NATALIA"] },
+        { name: "BELERICK", image: "BELERICK.png", role: "Tank", counters: ["DYRROTH", "X.BORG", "KARRIE", "MARTIS", "THAMUZ"] },
+        { name: "SELENA", image: "SELENA.png", role: "Assassino", counters: ["WAN WAN", "SABER", "BENEDETTA", "DIGGIE", "VALIR"] },
+        { name: "THAMUZ", image: "THAMUZ.png", role: "Soldado", counters: ["X.BORG", "ALDOUS", "VALIR", "BAXIA", "CICI"] },
+        { name: "LEOMORD", image: "LEOMORD.png", role: "Soldado", counters: ["JAWHEAD", "CHOU", "ALPHA", "MINSITTHAR", "MELISSA"] },
+        { name: "VALE", image: "VALE.png", role: "Mago", counters: ["CHOU", "HELCURT", "HARLEY", "LANCELOT", "FANNY"] },
+        { name: "KADITA", image: "KADITA.png", role: "Mago", counters: ["HELCURT", "NATALIA", "MINSITTHAR", "BAXIA", "KAJA"] },
+        { name: "LUNOX", image: "LUNOX.png", role: "Mago", counters: ["HELCURT", "CLAUDE", "LANCELOT", "GUSION", "LEOMORD"] },
+        { name: "LYLIA", image: "LYLIA.png", role: "Mago", counters: ["GUINEVERE", "X.BORG", "DYRROTH", "FRANCO", "KAJA"] },
+        { name: "HANZO", image: "HANZO.png", role: "Assassino", counters: ["LING", "NATALIA", "FANNY", "ALDOUS", "HELCURT"] },
+        { name: "FARAMIS", image: "FARAMIS.png", role: "Mago", counters: ["X.BORG", "LYLIA", "GUSION", "WAN WAN", "PHARSA"] },
+        { name: "BADANG", image: "BADANG.png", role: "Soldado", counters: ["CHOU", "BENEDETTA", "ALDOUS", "EDITH", "ARGUS"] },
+        { name: "BAXIA", image: "BAXIA.png", role: "Tank", counters: ["GUSION", "GROCK", "LESLEY", "HARLEY", "KAGURA"] },
+        { name: "AURORA", image: "AURORA.png", role: "Mago", counters: ["GUINEVERE", "NATALIA", "HAYABUSA", "CHOU", "KAGURA"] },
+        { name: "KHUFRA", image: "KHUFRA.png", role: "Suporte", counters: ["BAXIA", "MINSITTHAR", "WAN WAN", "VALIR", "DIGGIE"] },
+        { name: "GUINEVERE", image: "GUINEVERE.png", role: "Soldado", counters: ["SELENA", "WAN WAN", "DIGGIE", "VALIR", "FANNY"] },
+        { name: "JULIAN", image: "JULIAN.png", role: "Soldado", counters: ["AAMON", "HELCURT", "PAQUITO", "YU ZHONG", "ROGER"] },
+        { name: "KIMMY", image: "KIMMY.png", role: "Atirador", counters: ["CHOU", "ALDOUS", "HAYABUSA", "LANCELOT", "LOLITA"] },
+        { name: "EDITH", image: "EDITH.png", role: "Tank/Atirador", counters: ["BAXIA", "THAMUZ", "BEATRIX", "MINSITTHAR", "WAN WAN"] },
+        { name: "MELISSA", image: "MELISSA.png", role: "Atirador", counters: ["FRANCO", "X.BORG", "MARTIZ", "YU ZHONG", "HAYABUSA"] },
+        { name: "YIN", image: "YIN.png", role: "Soldado", counters: ["THAMUZ", "SUN", "ARGUS", "JAWHEAD", "VALIR"] },
+        { name: "VALENTINA", image: "VALENTINA.png", role: "Mago", counters: ["WAN WAN", "ALICE", "SUN", "GUSION", "KAGURA"] },
+        { name: "MATHILDA", image: "MATHILDA.png", role: "Assassino/Suporte", counters: ["BAXIA", "FRANCO", "WAN WAN", "VALIR", "THAMUZ"] },
+        { name: "FLORYN", image: "FLORYN.png", role: "Suporte", counters: ["EUDORA", "KAGURA", "PAQUITO", "X.BORG", "NATAN"] },
+        { name: "NATAN", image: "NATAN.png", role: "Atirador", counters: ["HAYABUSA", "SABER", "MELISSA", "LOLITA", "CHOU"] },
+        { name: "AULUS", image: "AULUS.png", role: "Soldado", counters: ["PHOVEUS", "MASHA", "JAWHEAD", "VALIR", "WAN WAN"] },
+        { name: "GRANGER", image: "GRANGER.png", role: "Atirador", counters: ["HELCURT", "SELENA", "GUINEVERE", "GUSION", "SABER"] },
+        { name: "AAMON", image: "AAMON.png", role: "Assassino", counters: ["SABER", "PAQUITO", "X.BORG", "GUSION", "HAYABUSA"] },
+        { name: "BRODY", image: "BRODY.png", role: "Atirador", counters: ["LING", "HAYABUSA", "KARINA", "SABER", "EUDORA"] },
+        { name: "PAQUITO", image: "PAQUITO.png", role: "Soldado", counters: ["ARGUS", "PHOVEUS", "KHUFRA", "SUN", "MINSITTHAR"] },
+        { name: "ESMERALDA", image: "ESMERALDA.png", role: "Tank", counters: ["KARRIE", "THAMUZ", "DYRROTH", "VALIR", "BAXIA"] },
+        { name: "POPOL E KUPA", image: "POPOL E KUPA.png", role: "Atirador", counters: ["NOLAN", "NATALIA", "GUSION", "SILVANNA", "ESMERALDA"] },
+        { name: "BENEDETTA", image: "BENEDETTA.png", role: "Soldado/Assassino", counters: ["GUINEVERE", "KHUFRA", "PHOVEUS", "MINSITTHAR", "KAJA"] },
+        { name: "KHALEED", image: "KHALEED.png", role: "Soldado", counters: ["ATLAS", "YU ZHONG", "KIMMY", "HELCURT", "CECILION"] },
+        { name: "X.BORG", image: "X.BORG.png", role: "Soldado", counters: ["LUNOX", "CHOU", "ESMERALDA", "WAN WAN", "NATALIA"] },
+        { name: "HARITH", image: "HARITH.png", role: "Mago", counters: ["MINSITTHAR", "ESMERALDA", "KAJA", "FRANCO", "PHOVEUS"] },
+        { name: "BARATS", image: "BARATS.png", role: "Tank", counters: ["X.BORG", "KARRIE", "ESMERALDA", "VALIR", "ANGELA"] },
+        { name: "WAN WAN", image: "WAN WAN.png", role: "Atirador", counters: ["NATALIA", "ESMERALDA", "LUNOX", "KAJA", "LOLITA"] },
+        { name: "MASHA", image: "MASHA.png", role: "Soldado", counters: ["BELERICK", "THAMUZ", "SUN", "LUNOX", "DYRROTH"] },
+        { name: "MINSITTHAR", image: "MINSITTHAR.png", role: "Soldado", counters: ["MARTIS", "YIN", "AULUS", "AKAI", "ZILONG"] },
+        { name: "TERIZLA", image: "TERIZLA.png", role: "Soldado", counters: ["VALIR", "DYRROTH", "LUNOX", "KARRIE", "X.BORG"] },
+        { name: "ATLAS", image: "ATLAS.png", role: "Tank", counters: ["VALIR", "KARRIE", "DIGGIE", "KAJA", "AKAI"] },
+        { name: "DYRROTH", image: "DYRROTH.png", role: "Soldado", counters: ["GUINEVERE", "ESMERALDA", "PHOVEUS", "CHOU", "MINSITTHAR"] },
+        { name: "PHOVEUS", image: "PHOVEUS.png", role: "Soldado", counters: ["LAYLA", "BAXIA", "YVE", "ESMERALDA", "MINSITTHAR"] },
+        { name: "LING", image: "LING.png", role: "Assassino", counters: ["VALIR", "KHUFRA", "AKAI", "CHOU", "GUSION"] },
+        { name: "BEATRIX", image: "BEATRIX.png", role: "Atirador", counters: ["BENEDETTA", "PAQUITO", "GUSION", "FRANCO", "HAYABUSA"] },
+        { name: "GLOO", image: "GLOO.png", role: "Tank", counters: ["YU ZHONG", "LANCELOT", "FARAMIS", "VEXANA", "WAN WAN"] },
+        { name: "SILVANNA", image: "SILVANNA.png", role: "Soldado", counters: ["WAN WAN", "X.BORG", "BAXIA", "FRANCO", "CHOU"] },
+        { name: "LUO YI", image: "LUO YI.png", role: "Mago", counters: ["NATALIA", "HAYABUSA", "GUSION", "FRANCO", "CHOU"] },
+        { name: "YU ZHONG", image: "YU ZHONG.png", role: "Soldado", counters: ["KARRIE", "DYRROTH", "MOSKOV", "THAMUZ", "VALENTINA"] },
+        { name: "CECILION", image: "CECILION.png", role: "Mago", counters: ["LUNOX", "CHOU", "YIN", "LING", "X.BORG"] },
+        { name: "CARMILLA", image: "CARMILLA.png", role: "Tank/Suporte", counters: ["HARITH", "ZILONG", "WAN WAN", "BAXIA", "SUN"] },
+        { name: "YVE", image: "YVE.png", role: "Mago", counters: ["HELCURT", "NANA", "NATALIA", "FRANCO", "KAJA"] },
+        { name: "NOVARIA", image: "NOVARIA.png", role: "Mago", counters: ["LOLITA", "YU ZHONG", "NATALIA", "LING", "FANNY"] },
+        { name: "IXIA", image: "IXIA.png", role: "Atirador", counters: ["LOLITA", "KARRIE", "MOSKOV", "HANABI", "CLAUDE"] },
+        { name: "NOLAN", image: "NOLAN.png", role: "Assassino", counters: ["PHOVEUS", "KHUFRA", "FRANCO", "MINSITTHAR", "GATOTKACA"] },
+        { name: "JOY", image: "JOY.png", role: "Assassino", counters: ["MINSITTHAR", "PHOVEUS", "FRANCO", "KAJA", "BARATS"] },
+        { name: "ARLOTT", image: "ARLOTT.png", role: "Soldado", counters: ["MARTIS", "CHOU", "MINSITTHAR", "KAJA", "THAMUZ"] },
+        { name: "CICI", image: "CICI.png", role: "Soldado", counters: ["LING", "LANCELOT", "SABER", "AKAI", "YVE"] },
+        { name: "XAVIER", image: "XAVIER.png", role: "Mago", counters: ["HELCURT", "FANNY", "CHOU", "GUSION", "LANCELOT"] },
+        { name: "CHIP", image: "CHIP.png", role: "Tank", counters: ["BAXIA", "WAN WAN", "MOSKOV", "LESLEY", "FRANCO"] },
+        { name: "ZHUXIN", image: "ZHUXIN.png", role: "Mago", counters: ["HAYABUSA", "LANCELOT", "MARTIS", "NATALIA", "SABER"] },
+        { name: "SUYO", image: "SUYO.png", role: "Soldado/Assassino", counters: ["THAMUZ", "X.BORG", "YIN", "KAJA", "FRANCO"] },
+        { name: "LUKAS", image: "LUKAS.png", role: "Soldado", counters: ["DYRROTH", "VALIR", "VALENTINA", "X.BORG", "THAMUZ"] },
+        { name: "KALEA", image: "KALEA.png", role: "Suporte", counters: ["MINSITTHAR", "YIN", "MINOTAURO", "DIGGIE", "ALPHA"] },
+        { name: "ZETIAN", image: "ZETIAN.png", role: "Mago", counters: ["FANNY", "SABER", "NOLAN", "GUINEVERE", "LING"] },
+        { name: "OBSIDIA", image: "OBSIDIA.png", role: "Atirador", counters: ["CHOU", "SABER", "JOY", "GUINEVERE", "FANNY"] },
+        { name: "SORA", image: "SORA.png", role: "Soldado", counters: ["FRANCO", "BELERICK", "KAJA", "MINOTAURO", "THAMUZ"] },
+        { name: "MARCEL", image: "MARCEL.png", role: "Suporte", counters: ["FANNY", "HAYABUSA", "YIN", "LESLEY", "KADITA"] },
+        // ... adicione o resto da sua lista aqui
+
+    ];
+
+    let selectedEnemies = [];
+
+    function displayHeroes() {
+        const grid = document.getElementById('hero-list');
+        grid.innerHTML = heroes.map(hero => `
+            <div class="hero-card" onclick="selectHeroByName('${hero.name}')">
+                <img src="${hero.image}" onerror="this.src='https://via.placeholder.com/60/222/fff?text=${hero.name.substring(0,1)}'">
+                <strong>${hero.name}</strong>
+            </div>
+        `).join('');
+    }
+
+    function selectHeroByName(name) {
+        const hero = heroes.find(h => h.name === name);
+        if (selectedEnemies.length < 5 && !selectedEnemies.includes(hero)) {
+            selectedEnemies.push(hero);
+            updateUI();
+        }
+    }
+
+    function updateUI() {
+        const slots = document.getElementById('enemy-team').children;
+        for(let i=0; i<5; i++) {
+            if(selectedEnemies[i]) {
+                slots[i].innerHTML = `<img src="${selectedEnemies[i].image}" onerror="this.src='https://via.placeholder.com/80/222/fff?text=?'">`;
+                slots[i].classList.add('filled');
+            } else {
+                slots[i].innerHTML = "Vazio";
+                slots[i].classList.remove('filled');
+            }
+        }
+        renderSuggestions();
+    }
+
+    function renderSuggestions() {
+        const resultsDiv = document.getElementById('counter-results');
+        if (selectedEnemies.length === 0) {
+            resultsDiv.innerHTML = "Selecione heróis inimigos acima.";
+            return;
+        }
+
+        resultsDiv.innerHTML = selectedEnemies.map(inimigo => `
+            <div class="counter-card">
+                <div class="counter-header">
+                    <img src="${inimigo.image}" style="width: 35px; height: 35px; border-radius: 5px;" onerror="this.src='https://via.placeholder.com/35'">
+                    <strong>Sugestões contra ${inimigo.name}</strong>
+                </div>
+                <div class="counter-list">
+                    ${inimigo.counters.map(counterNome => {
+                        const hEncontrado = heroes.find(h => h.name.toUpperCase() === counterNome.toUpperCase());
+                        const cImg = hEncontrado ? hEncontrado.image : (counterNome.toUpperCase() + ".png");
+                        return `
+                            <div class="counter-item">
+                                <img src="${cImg}" onerror="this.src='https://via.placeholder.com/50/222/fff?text=?'">
+                                <span>${counterNome}</span>
+                            </div>
+                        `;
+                    }).join('')}
+                </div>
+            </div>
+        `).join('');
+    }
+
+    function filterHeroes() {
+        const filter = document.getElementById('hero-search').value.toLowerCase();
+        const cards = document.getElementsByClassName('hero-card');
+        Array.from(cards).forEach(card => {
+            card.style.display = card.innerText.toLowerCase().includes(filter) ? "" : "none";
+        });
+    }
+
+    function clearSelection() {
+        selectedEnemies = [];
+        document.getElementById('hero-search').value = "";
+        updateUI();
+        filterHeroes();
+    }
+
+    displayHeroes();
+</script>
+
+</body>
+</html>
