@@ -75,12 +75,68 @@
 <script>
     // LISTA DE HERÓIS (Substitua pela sua lista completa depois)
     const heroes = [
+        // ASSASSINOS
         { name: "AAMON", image: "AAMON.png", role: "Assassino", counters: ["Saber", "Ruby", "Eudora", "Khufra"] },
         { name: "BENEDETTA", image: "BENEDETTA.png", role: "Assassino", counters: ["Phoveus", "Khufra", "Minsitthar", "Saber"] },
         { name: "FANNY", image: "FANNY.png", role: "Assassino", counters: ["Khufra", "Saber", "Franco", "Eudora", "Minsitthar"] },
-        { name: "SABER", image: "SABER.png", role: "Assassino", counters: ["Argus", "Gatotkaca", "Hylos"] },
-        { name: "CHOU", image: "CHOU.png", role: "Lutador", counters: ["Khufra", "Ruby", "Phoveus"] }
-        // ... adicione todos os outros aqui mantendo o padrão ...
+        { name: "GUSION", image: "GUSION.png", role: "Assassino", counters: ["Lancelot", "Chou", "Saber", "Ruby"] },
+        { name: "HANZO", image: "HANZO.png", role: "Assassino", counters: ["Natalia", "Helcurt", "Aldous", "Ling"] },
+        { name: "HAYABUSA", image: "HAYABUSA.png", role: "Assassino", counters: ["Saber", "Chou", "Khufra", "Cyclops"] },
+        { name: "HELCURT", image: "HELCURT.png", role: "Assassino", counters: ["Eudora", "Saber", "Hylos", "Belerick"] },
+        { name: "JOY", image: "JOY.png", role: "Assassino", counters: ["Minsitthar", "Phoveus", "Franco", "Kaja"] },
+        { name: "KARINA", image: "KARINA.png", role: "Assassino", counters: ["Eudora", "Saber", "X.Borg", "Lancelot"] },
+        { name: "LANCELOT", image: "LANCELOT.png", role: "Assassino", counters: ["Khufra", "Chou", "Ruby", "Martis"] },
+        { name: "LING", image: "LING.png", role: "Assassino", counters: ["Khufra", "Saber", "Minsitthar", "Eudora"] },
+        { name: "NATALIA", image: "NATALIA.png", role: "Assassino", counters: ["Rafaela", "Hylos", "Saber", "Yi Sun-shin"] },
+        { name: "NOLAN", image: "NOLAN.png", role: "Assassino", counters: ["Franco", "Kaja", "Saber", "Khufra"] },
+        { name: "SABER", image: "SABER.png", role: "Assassino", counters: ["Argus", "Gatotkaca", "Hylos", "Antique Cuirass"] },
+        { name: "SELENA", image: "SELENA.png", role: "Assassino", counters: ["Diggie", "Kaja", "Franco", "Pharsa"] },
+        { name: "SUYOU", image: "SUYOU.png", role: "Assassino", counters: ["Kaja", "Franco", "Terizla", "Arlott"] },
+
+        // ATIRADORES
+        { name: "BEATRIX", image: "BEATRIX.png", role: "Atirador", counters: ["Natalia", "Saber", "Lancelot", "Chou"] },
+        { name: "BRODY", image: "BRODY.png", role: "Atirador", counters: ["Saber", "Natalia", "Lancelot", "Ling"] },
+        { name: "BRUNO", image: "BRUNO.png", role: "Atirador", counters: ["Lesley", "Claude", "Natalia", "Helcurt"] },
+        { name: "CLAUDE", image: "CLAUDE.png", role: "Atirador", counters: ["Lesley", "Saber", "Franco", "Irithel"] },
+        { name: "CLINT", image: "CLINT.png", role: "Atirador", counters: ["Bruno", "Nathan", "Saber", "Natalia"] },
+        { name: "GRANGER", image: "GRANGER.png", role: "Atirador", counters: ["Lancelot", "Saber", "Chou", "Natalia"] },
+        { name: "HANABI", image: "HANABI.png", role: "Atirador", counters: ["Natalia", "Saber", "Lancelot", "Ling"] },
+        { name: "IRITHEL", image: "IRITHEL.png", role: "Atirador", counters: ["Lesley", "Saber", "Natalia", "Bruno"] },
+        { name: "IXIA", image: "IXIA.png", role: "Atirador", counters: ["Lancelot", "Saber", "Natalia", "Ling"] },
+        { name: "KARRIE", image: "KARRIE.png", role: "Atirador", counters: ["Lesley", "Saber", "Natalia", "Lancelot"] },
+        { name: "LAYLA", image: "LAYLA.png", role: "Atirador", counters: ["Saber", "Natalia", "Lancelot", "Ling"] },
+        { name: "LESLEY", image: "LESLEY.png", role: "Atirador", counters: ["Saber", "Natalia", "Lancelot", "Helcurt"] },
+        { name: "MELISSA", image: "MELISSA.png", role: "Atirador", counters: ["Saber", "Franco", "Lesley", "Natalia"] },
+        { name: "MIYA", image: "MIYA.png", role: "Atirador", counters: ["Saber", "Natalia", "Lancelot", "Ling"] },
+        { name: "MOSKOV", image: "MOSKOV.png", role: "Atirador", counters: ["Lesley", "Saber", "Natalia", "Eudora"] },
+        { name: "NATAN", image: "NATAN.png", role: "Atirador", counters: ["Saber", "Natalia", "Lancelot", "Ling"] },
+        { name: "WANWAN", image: "WANWAN.png", role: "Atirador", counters: ["Saber", "Franco", "Kaja", "Natalia", "Khufra"] },
+
+        // LUTADORES
+        { name: "ALDOUS", image: "ALDOUS.png", role: "Lutador", counters: ["Akai", "Chou", "Kaja", "Franco"] },
+        { name: "ALPHA", image: "ALPHA.png", role: "Lutador", counters: ["Chou", "Ruby", "Baxia", "Dyrroth"] },
+        { name: "DYRROTH", image: "DYRROTH.png", role: "Lutador", counters: ["Chou", "Ruby", "Argus", "Freya"] },
+        { name: "MARTIS", image: "MARTIS.png", role: "Lutador", counters: ["Chou", "Ruby", "Phoveus", "Kaja"] },
+        { name: "PAQUITO", image: "PAQUITO.png", role: "Lutador", counters: ["Chou", "Ruby", "Phoveus", "Kaja"] },
+        { name: "YU ZHONG", image: "YU_ZHONG.png", role: "Lutador", counters: ["Baxia", "Dyrroth", "Karrie"] },
+        { name: "CHOU", image: "CHOU.png", role: "Lutador", counters: ["Khufra", "Ruby", "Gatotkaca", "Phoveus"] },
+        { name: "TERIZLA", image: "TERIZLA.png", role: "Lutador", counters: ["Karrie", "Valir", "Lunox"] },
+        { name: "LAPU-LAPU", image: "LAPU-LAPU.png", role: "Lutador", counters: ["Esmeralda", "Ruby", "Chou"] },
+
+        // TANQUES
+        { name: "TIGREAL", image: "TIGREAL.png", role: "Tanque", counters: ["Diggie", "Chou", "Franco", "Kaja"] },
+        { name: "AKAI", image: "AKAI.png", role: "Tanque", counters: ["Diggie", "Valir", "Karrie", "Claude"] },
+        { name: "FRANCO", image: "FRANCO.png", role: "Tanque", counters: ["Diggie", "Chou", "Ruby", "Hylos"] },
+        { name: "KHUFRA", image: "KHUFRA.png", role: "Tanque", counters: ["Franco", "Kaja", "Diggie", "Valir"] },
+        { name: "ATLAS", image: "ATLAS.png", role: "Tanque", counters: ["Diggie", "Chou", "Franco"] },
+        { name: "BELERICK", image: "BELERICK.png", role: "Tanque", counters: ["Karrie", "Lunox", "Valir"] },
+
+        // MAGOS
+        { name: "VEXANA", image: "VEXANA.png", role: "Mago", counters: ["Saber", "Natalia", "Lancelot", "Ling"] },
+        { name: "NANA", image: "NANA.png", role: "Mago", counters: ["Saber", "Natalia", "Lancelot", "Ling"] },
+        { name: "VALIR", image: "VALIR.png", role: "Mago", counters: ["Saber", "Natalia", "Lancelot", "Ling"] },
+        { name: "EUDORA", image: "EUDORA.png", role: "Mago", counters: ["Chou", "Lancelot", "Benedetta"] },
+        { name: "AURORA", image: "AURORA.png", role: "Mago", counters: ["Saber", "Helcurt", "Natalia"] }
     ];
 
     let selectedEnemies = [];
@@ -167,3 +223,4 @@
 
 </body>
 </html>
+
