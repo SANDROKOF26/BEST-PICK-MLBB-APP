@@ -2,48 +2,45 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>BEST PICK MLBB</title>
     <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #0f1015; color: white; text-align: center; margin: 0; padding: 20px; }
-        .container { max-width: 900px; margin: auto; background: #1a1c23; padding: 20px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #0f1015; color: white; text-align: center; margin: 0; padding: 10px; overflow-x: hidden; }
+        .container { max-width: 900px; margin: auto; background: #1a1c23; padding: 15px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
         
         .main-title {
-            font-size: 3rem;
+            font-size: 2.2rem;
             font-weight: 900;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
             background: linear-gradient(to bottom, #fff 20%, #ffd700 50%, #b8860b 80%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             text-transform: uppercase;
-            letter-spacing: 4px;
-            filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.3));
+            letter-spacing: 2px;
+            filter: drop-shadow(0 0 8px rgba(255, 215, 0, 0.3));
         }
 
-        .slots { display: flex; justify-content: center; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
-        .slot { width: 80px; height: 80px; border: 2px dashed #444; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 10px; overflow: hidden; background: #252830; transition: 0.3s; }
+        .slots { display: flex; justify-content: center; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; }
+        .slot { width: 65px; height: 65px; border: 2px dashed #444; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 9px; overflow: hidden; background: #252830; }
         .slot img { width: 100%; height: 100%; object-fit: cover; }
-        .slot.filled { border-style: solid; border-color: #ff4444; box-shadow: 0 0 15px rgba(255, 68, 68, 0.3); }
+        .slot.filled { border-style: solid; border-color: #ff4444; box-shadow: 0 0 10px rgba(255, 68, 68, 0.4); }
 
-        #hero-search { padding: 15px; width: 90%; border-radius: 8px; border: 1px solid #444; background: #0f1015; color: white; margin-bottom: 15px; outline: none; font-size: 16px; }
-        #hero-search:focus { border-color: #007bff; }
+        #hero-search { padding: 12px; width: 95%; border-radius: 8px; border: 1px solid #444; background: #0f1015; color: white; margin-bottom: 15px; outline: none; font-size: 16px; box-sizing: border-box; }
 
-        .hero-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 12px; border: 1px solid #333; padding: 15px; height: 400px; overflow-y: auto; background: #12141a; border-radius: 10px; }
-        .hero-card { cursor: pointer; padding: 10px; background: #252830; border-radius: 8px; font-size: 12px; transition: 0.2s; border: 1px solid transparent; }
-        .hero-card:hover { background: #3d4250; transform: translateY(-5px); border-color: #007bff; }
-        .hero-card img { width: 60px; height: 60px; border-radius: 50%; display: block; margin: 0 auto 8px; border: 2px solid #444; }
+        .hero-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(80px, 1fr)); gap: 10px; border: 1px solid #333; padding: 10px; height: 350px; overflow-y: auto; background: #12141a; border-radius: 10px; }
+        .hero-card { cursor: pointer; padding: 8px; background: #252830; border-radius: 8px; font-size: 11px; transition: 0.2s; border: 1px solid transparent; }
+        .hero-card img { width: 50px; height: 50px; border-radius: 50%; display: block; margin: 0 auto 5px; border: 2px solid #444; }
 
-        .suggestions { margin-top: 30px; padding: 20px; background: #12141a; border-radius: 12px; border: 1px solid #333; text-align: left; }
+        .suggestions { margin-top: 25px; padding: 15px; background: #12141a; border-radius: 12px; border: 1px solid #333; text-align: left; }
         .counter-card { background: #252830; margin-bottom: 15px; border-radius: 10px; border: 1px solid #444; overflow: hidden; }
-        .counter-header { background: #333; padding: 10px; display: flex; align-items: center; gap: 10px; border-bottom: 2px solid #ff4444; }
-        .counter-list { padding: 15px; display: flex; flex-wrap: wrap; gap: 12px; }
+        .counter-header { background: #333; padding: 8px 12px; display: flex; align-items: center; gap: 10px; border-bottom: 2px solid #ff4444; font-size: 14px; }
+        .counter-list { padding: 10px; display: flex; flex-wrap: wrap; gap: 8px; }
         
-        .counter-item { display: flex; align-items: center; gap: 10px; background: rgba(255,255,255,0.05); padding: 8px 15px; border-radius: 10px; border: 1px solid #444; }
-        .counter-item img { width: 50px; height: 50px; border-radius: 50%; border: 2px solid #4caf50; object-fit: cover; }
-        .counter-item span { color: gold; font-weight: bold; font-size: 14px; }
+        .counter-item { display: flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.05); padding: 6px 12px; border-radius: 8px; border: 1px solid #444; }
+        .counter-item img { width: 35px; height: 35px; border-radius: 50%; border: 1px solid #4caf50; object-fit: cover; }
+        .counter-item span { color: gold; font-weight: bold; font-size: 12px; }
 
-        button { margin-top: 20px; padding: 12px 30px; cursor: pointer; background: #c62828; color: white; border: none; border-radius: 8px; font-weight: bold; text-transform: uppercase; transition: 0.3s; }
-        button:hover { background: #ff4444; }
+        .clear-btn { margin-top: 15px; padding: 12px 25px; cursor: pointer; background: #c62828; color: white; border: none; border-radius: 8px; font-weight: bold; width: 100%; max-width: 300px; }
     </style>
 </head>
 <body>
@@ -51,104 +48,88 @@
 <div class="container">
     <h1 class="main-title">BEST PICK MLBB</h1>
     
-    <p style="color: #888; margin-bottom: 10px;">DRAFT INIMIGO (CLIQUE PARA SELECIONAR)</p>
+    <p style="color: #888; font-size: 12px; margin-bottom: 10px;">SELECIONE O TIME INIMIGO</p>
     <div class="slots" id="enemy-team">
-        <div class="slot">Vazio</div>
-        <div class="slot">Vazio</div>
-        <div class="slot">Vazio</div>
-        <div class="slot">Vazio</div>
-        <div class="slot">Vazio</div>
+        <div class="slot">Vazio</div><div class="slot">Vazio</div><div class="slot">Vazio</div><div class="slot">Vazio</div><div class="slot">Vazio</div>
     </div>
 
-    <input type="text" id="hero-search" placeholder="🔍 Buscar herói inimigo..." onkeyup="filterHeroes()">
+    <input type="text" id="hero-search" placeholder="🔍 Buscar herói..." onkeyup="filterHeroes()">
 
     <div class="hero-grid" id="hero-list"></div>
 
-    <button onclick="clearSelection()">Limpar Seleção</button>
+    <button class="clear-btn" onclick="clearSelection()">Limpar Seleção</button>
 
     <div class="suggestions">
-        <h3 style="text-align: center; color: #4caf50;">CONSELHO DE COUNTERS</h3>
-        <div id="counter-results">Selecione heróis inimigos acima.</div>
+        <h3 style="text-align: center; color: #4caf50; margin-top: 0;">COUNTERS RECOMENDADOS</h3>
+        <div id="counter-results">Clique nos heróis inimigos acima.</div>
     </div>
 </div>
 
 <script>
-    // LISTA DE HERÓIS (Substitua pela sua lista completa depois)
     const heroes = [
-        // ASSASSINOS
-        { name: "AAMON", image: "AAMON.png", role: "Assassino", counters: ["Saber", "Ruby", "Eudora", "Khufra"] },
-        { name: "BENEDETTA", image: "BENEDETTA.png", role: "Assassino", counters: ["Phoveus", "Khufra", "Minsitthar", "Saber"] },
-        { name: "FANNY", image: "FANNY.png", role: "Assassino", counters: ["Khufra", "Saber", "Franco", "Eudora", "Minsitthar"] },
-        { name: "GUSION", image: "GUSION.png", role: "Assassino", counters: ["Lancelot", "Chou", "Saber", "Ruby"] },
-        { name: "HANZO", image: "HANZO.png", role: "Assassino", counters: ["Natalia", "Helcurt", "Aldous", "Ling"] },
-        { name: "HAYABUSA", image: "HAYABUSA.png", role: "Assassino", counters: ["Saber", "Chou", "Khufra", "Cyclops"] },
-        { name: "HELCURT", image: "HELCURT.png", role: "Assassino", counters: ["Eudora", "Saber", "Hylos", "Belerick"] },
-        { name: "JOY", image: "JOY.png", role: "Assassino", counters: ["Minsitthar", "Phoveus", "Franco", "Kaja"] },
-        { name: "KARINA", image: "KARINA.png", role: "Assassino", counters: ["Eudora", "Saber", "X.Borg", "Lancelot"] },
-        { name: "LANCELOT", image: "LANCELOT.png", role: "Assassino", counters: ["Khufra", "Chou", "Ruby", "Martis"] },
-        { name: "LING", image: "LING.png", role: "Assassino", counters: ["Khufra", "Saber", "Minsitthar", "Eudora"] },
-        { name: "NATALIA", image: "NATALIA.png", role: "Assassino", counters: ["Rafaela", "Hylos", "Saber", "Yi Sun-shin"] },
-        { name: "NOLAN", image: "NOLAN.png", role: "Assassino", counters: ["Franco", "Kaja", "Saber", "Khufra"] },
-        { name: "SABER", image: "SABER.png", role: "Assassino", counters: ["Argus", "Gatotkaca", "Hylos", "Antique Cuirass"] },
-        { name: "SELENA", image: "SELENA.png", role: "Assassino", counters: ["Diggie", "Kaja", "Franco", "Pharsa"] },
-        { name: "SUYOU", image: "SUYOU.png", role: "Assassino", counters: ["Kaja", "Franco", "Terizla", "Arlott"] },
-
-        // ATIRADORES
-        { name: "BEATRIX", image: "BEATRIX.png", role: "Atirador", counters: ["Natalia", "Saber", "Lancelot", "Chou"] },
-        { name: "BRODY", image: "BRODY.png", role: "Atirador", counters: ["Saber", "Natalia", "Lancelot", "Ling"] },
-        { name: "BRUNO", image: "BRUNO.png", role: "Atirador", counters: ["Lesley", "Claude", "Natalia", "Helcurt"] },
-        { name: "CLAUDE", image: "CLAUDE.png", role: "Atirador", counters: ["Lesley", "Saber", "Franco", "Irithel"] },
-        { name: "CLINT", image: "CLINT.png", role: "Atirador", counters: ["Bruno", "Nathan", "Saber", "Natalia"] },
-        { name: "GRANGER", image: "GRANGER.png", role: "Atirador", counters: ["Lancelot", "Saber", "Chou", "Natalia"] },
-        { name: "HANABI", image: "HANABI.png", role: "Atirador", counters: ["Natalia", "Saber", "Lancelot", "Ling"] },
-        { name: "IRITHEL", image: "IRITHEL.png", role: "Atirador", counters: ["Lesley", "Saber", "Natalia", "Bruno"] },
-        { name: "IXIA", image: "IXIA.png", role: "Atirador", counters: ["Lancelot", "Saber", "Natalia", "Ling"] },
-        { name: "KARRIE", image: "KARRIE.png", role: "Atirador", counters: ["Lesley", "Saber", "Natalia", "Lancelot"] },
-        { name: "LAYLA", image: "LAYLA.png", role: "Atirador", counters: ["Saber", "Natalia", "Lancelot", "Ling"] },
-        { name: "LESLEY", image: "LESLEY.png", role: "Atirador", counters: ["Saber", "Natalia", "Lancelot", "Helcurt"] },
-        { name: "MELISSA", image: "MELISSA.png", role: "Atirador", counters: ["Saber", "Franco", "Lesley", "Natalia"] },
-        { name: "MIYA", image: "MIYA.png", role: "Atirador", counters: ["Saber", "Natalia", "Lancelot", "Ling"] },
-        { name: "MOSKOV", image: "MOSKOV.png", role: "Atirador", counters: ["Lesley", "Saber", "Natalia", "Eudora"] },
-        { name: "NATAN", image: "NATAN.png", role: "Atirador", counters: ["Saber", "Natalia", "Lancelot", "Ling"] },
-        { name: "WANWAN", image: "WANWAN.png", role: "Atirador", counters: ["Saber", "Franco", "Kaja", "Natalia", "Khufra"] },
-
-        // LUTADORES
-        { name: "ALDOUS", image: "ALDOUS.png", role: "Lutador", counters: ["Akai", "Chou", "Kaja", "Franco"] },
-        { name: "ALPHA", image: "ALPHA.png", role: "Lutador", counters: ["Chou", "Ruby", "Baxia", "Dyrroth"] },
-        { name: "DYRROTH", image: "DYRROTH.png", role: "Lutador", counters: ["Chou", "Ruby", "Argus", "Freya"] },
-        { name: "MARTIS", image: "MARTIS.png", role: "Lutador", counters: ["Chou", "Ruby", "Phoveus", "Kaja"] },
-        { name: "PAQUITO", image: "PAQUITO.png", role: "Lutador", counters: ["Chou", "Ruby", "Phoveus", "Kaja"] },
-        { name: "YU ZHONG", image: "YU_ZHONG.png", role: "Lutador", counters: ["Baxia", "Dyrroth", "Karrie"] },
-        { name: "CHOU", image: "CHOU.png", role: "Lutador", counters: ["Khufra", "Ruby", "Gatotkaca", "Phoveus"] },
-        { name: "TERIZLA", image: "TERIZLA.png", role: "Lutador", counters: ["Karrie", "Valir", "Lunox"] },
-        { name: "LAPU-LAPU", image: "LAPU-LAPU.png", role: "Lutador", counters: ["Esmeralda", "Ruby", "Chou"] },
-        { name: "SUN", image: "SUN.png", role: "Lutador", counters: ["X.BORG", "Ruby", "SILVANNA", "AULUS", "VALIR"] },
-
-
-        // TANQUES
-        { name: "TIGREAL", image: "TIGREAL.png", role: "Tanque", counters: ["Diggie", "Chou", "Franco", "Kaja"] },
-        { name: "AKAI", image: "AKAI.png", role: "Tanque", counters: ["Diggie", "Valir", "Karrie", "Claude"] },
-        { name: "FRANCO", image: "FRANCO.png", role: "Tanque", counters: ["Diggie", "Chou", "Ruby", "Hylos"] },
-        { name: "KHUFRA", image: "KHUFRA.png", role: "Tanque", counters: ["Franco", "Kaja", "Diggie", "Valir"] },
-        { name: "ATLAS", image: "ATLAS.png", role: "Tanque", counters: ["Diggie", "Chou", "Franco"] },
-        { name: "BELERICK", image: "BELERICK.png", role: "Tanque", counters: ["Karrie", "Lunox", "Valir"] },
-
-        // MAGOS
-        { name: "VEXANA", image: "VEXANA.png", role: "Mago", counters: ["Saber", "Natalia", "Lancelot", "Ling"] },
-        { name: "NANA", image: "NANA.png", role: "Mago", counters: ["Saber", "Natalia", "Lancelot", "Ling"] },
-        { name: "VALIR", image: "VALIR.png", role: "Mago", counters: ["Saber", "Natalia", "Lancelot", "Ling"] },
-        { name: "EUDORA", image: "EUDORA.png", role: "Mago", counters: ["Chou", "Lancelot", "Benedetta"] },
-        { name: "AURORA", image: "AURORA.png", role: "Mago", counters: ["Saber", "Helcurt", "Natalia"] }
+        { name: "AAMON", image: "AAMON.png", counters: ["Saber", "Ruby", "Eudora", "Khufra"] },
+        { name: "BENEDETTA", image: "BENEDETTA.png", counters: ["Phoveus", "Khufra", "Minsitthar", "Saber"] },
+        { name: "FANNY", image: "FANNY.png", counters: ["Khufra", "Saber", "Franco", "Eudora"] },
+        { name: "GUSION", image: "GUSION.png", counters: ["Lancelot", "Chou", "Saber", "Ruby"] },
+        { name: "HANZO", image: "HANZO.png", counters: ["Natalia", "Helcurt", "Aldous", "Ling"] },
+        { name: "HAYABUSA", image: "HAYABUSA.png", counters: ["Saber", "Chou", "Khufra", "Cyclops"] },
+        { name: "HELCURT", image: "HELCURT.png", counters: ["Eudora", "Saber", "Hylos", "Belerick"] },
+        { name: "JOY", image: "JOY.png", counters: ["Minsitthar", "Phoveus", "Franco", "Kaja"] },
+        { name: "KARINA", image: "KARINA.png", counters: ["Eudora", "Saber", "X.Borg", "Lancelot"] },
+        { name: "LANCELOT", image: "LANCELOT.png", counters: ["Khufra", "Chou", "Ruby", "Martis"] },
+        { name: "LING", image: "LING.png", counters: ["Khufra", "Saber", "Minsitthar", "Eudora"] },
+        { name: "NATALIA", image: "NATALIA.png", counters: ["Rafaela", "Hylos", "Saber", "Yi Sun-shin"] },
+        { name: "NOLAN", image: "NOLAN.png", counters: ["Franco", "Kaja", "Saber", "Khufra"] },
+        { name: "SABER", image: "SABER.png", counters: ["Argus", "Gatotkaca", "Hylos"] },
+        { name: "SELENA", image: "SELENA.png", counters: ["Diggie", "Kaja", "Franco", "Pharsa"] },
+        { name: "SUYOU", image: "SUYOU.png", counters: ["Kaja", "Franco", "Terizla", "Arlott"] },
+        { name: "BEATRIX", image: "BEATRIX.png", counters: ["Natalia", "Saber", "Lancelot", "Chou"] },
+        { name: "BRODY", image: "BRODY.png", counters: ["Saber", "Natalia", "Lancelot", "Ling"] },
+        { name: "BRUNO", image: "BRUNO.png", counters: ["Lesley", "Claude", "Natalia", "Helcurt"] },
+        { name: "CLAUDE", image: "CLAUDE.png", counters: ["Lesley", "Saber", "Franco", "Irithel"] },
+        { name: "CLINT", image: "CLINT.png", counters: ["Bruno", "Nathan", "Saber", "Natalia"] },
+        { name: "GRANGER", image: "GRANGER.png", counters: ["Lancelot", "Saber", "Chou", "Natalia"] },
+        { name: "HANABI", image: "HANABI.png", counters: ["Natalia", "Saber", "Lancelot", "Ling"] },
+        { name: "IRITHEL", image: "IRITHEL.png", counters: ["Lesley", "Saber", "Natalia", "Bruno"] },
+        { name: "IXIA", image: "IXIA.png", counters: ["Lancelot", "Saber", "Natalia", "Ling"] },
+        { name: "KARRIE", image: "KARRIE.png", counters: ["Lesley", "Saber", "Natalia", "Lancelot"] },
+        { name: "LAYLA", image: "LAYLA.png", counters: ["Saber", "Natalia", "Lancelot", "Ling"] },
+        { name: "LESLEY", image: "LESLEY.png", counters: ["Saber", "Natalia", "Lancelot", "Helcurt"] },
+        { name: "MELISSA", image: "MELISSA.png", counters: ["Saber", "Franco", "Lesley", "Natalia"] },
+        { name: "MIYA", image: "MIYA.png", counters: ["Saber", "Natalia", "Lancelot", "Ling"] },
+        { name: "MOSKOV", image: "MOSKOV.png", counters: ["Lesley", "Saber", "Natalia", "Eudora"] },
+        { name: "NATAN", image: "NATAN.png", counters: ["Saber", "Natalia", "Lancelot", "Ling"] },
+        { name: "WANWAN", image: "WANWAN.png", counters: ["Saber", "Franco", "Kaja", "Natalia", "Khufra"] },
+        { name: "ALDOUS", image: "ALDOUS.png", counters: ["Akai", "Chou", "Kaja", "Franco"] },
+        { name: "ALPHA", image: "ALPHA.png", counters: ["Chou", "Ruby", "Baxia", "Dyrroth"] },
+        { name: "DYRROTH", image: "DYRROTH.png", counters: ["Chou", "Ruby", "Argus", "Freya"] },
+        { name: "MARTIS", image: "MARTIS.png", counters: ["Chou", "Ruby", "Phoveus", "Kaja"] },
+        { name: "PAQUITO", image: "PAQUITO.png", counters: ["Chou", "Ruby", "Phoveus", "Kaja"] },
+        { name: "YU ZHONG", image: "YU_ZHONG.png", counters: ["Baxia", "Dyrroth", "Karrie"] },
+        { name: "CHOU", image: "CHOU.png", counters: ["Khufra", "Ruby", "Gatotkaca", "Phoveus"] },
+        { name: "TERIZLA", image: "TERIZLA.png", counters: ["Karrie", "Valir", "Lunox"] },
+        { name: "LAPU-LAPU", image: "LAPU-LAPU.png", counters: ["Esmeralda", "Ruby", "Chou"] },
+        { name: "SUN", image: "SUN.png", counters: ["X.BORG", "Ruby", "SILVANNA", "AULUS"] },
+        { name: "TIGREAL", image: "TIGREAL.png", counters: ["Diggie", "Chou", "Franco", "Kaja"] },
+        { name: "AKAI", image: "AKAI.png", counters: ["Diggie", "Valir", "Karrie", "Claude"] },
+        { name: "FRANCO", image: "FRANCO.png", counters: ["Diggie", "Chou", "Ruby", "Hylos"] },
+        { name: "KHUFRA", image: "KHUFRA.png", counters: ["Franco", "Kaja", "Diggie", "Valir"] },
+        { name: "ATLAS", image: "ATLAS.png", counters: ["Diggie", "Chou", "Franco"] },
+        { name: "BELERICK", image: "BELERICK.png", counters: ["Karrie", "Lunox", "Valir"] },
+        { name: "VEXANA", image: "VEXANA.png", counters: ["Saber", "Natalia", "Lancelot", "Ling"] },
+        { name: "NANA", image: "NANA.png", counters: ["Saber", "Natalia", "Lancelot", "Ling"] },
+        { name: "VALIR", image: "VALIR.png", counters: ["Saber", "Natalia", "Lancelot", "Ling"] },
+        { name: "EUDORA", image: "EUDORA.png", counters: ["Chou", "Lancelot", "Benedetta"] },
+        { name: "AURORA", image: "AURORA.png", counters: ["Saber", "Helcurt", "Natalia"] }
     ];
 
     let selectedEnemies = [];
 
-    // Lógica para carregar da pasta /img
     function displayHeroes() {
         const grid = document.getElementById('hero-list');
         grid.innerHTML = heroes.map(hero => `
             <div class="hero-card" onclick="selectHeroByName('${hero.name}')">
-                <img src="img/${hero.image}" onerror="this.src='https://via.placeholder.com/60/222/fff?text=?'">
+                <img src="img/${hero.image}" onerror="this.src='https://via.placeholder.com/50/222/fff?text=?'">
                 <strong>${hero.name}</strong>
             </div>
         `).join('');
@@ -179,24 +160,23 @@
     function renderSuggestions() {
         const resultsDiv = document.getElementById('counter-results');
         if (selectedEnemies.length === 0) {
-            resultsDiv.innerHTML = "Selecione heróis inimigos acima.";
+            resultsDiv.innerHTML = "Clique nos heróis inimigos acima.";
             return;
         }
 
         resultsDiv.innerHTML = selectedEnemies.map(inimigo => `
             <div class="counter-card">
                 <div class="counter-header">
-                    <img src="img/${inimigo.image}" style="width: 35px; height: 35px; border-radius: 5px;" onerror="this.src='https://via.placeholder.com/35'">
-                    <strong>Sugestões contra ${inimigo.name}</strong>
+                    <img src="img/${inimigo.image}" style="width: 25px; height: 25px; border-radius: 4px;" onerror="this.src='https://via.placeholder.com/25'">
+                    <strong>Counters para ${inimigo.name}</strong>
                 </div>
                 <div class="counter-list">
                     ${inimigo.counters.map(counterNome => {
-                        const hEncontrado = heroes.find(h => h.name.toUpperCase() === counterNome.toUpperCase());
-                        // Tenta buscar a imagem do counter na pasta img/
-                        const cImg = hEncontrado ? hEncontrado.image : (counterNome.toUpperCase() + ".png");
+                        const hEnc = heroes.find(h => h.name.toUpperCase() === counterNome.toUpperCase());
+                        const cImg = hEnc ? hEnc.image : (counterNome.toUpperCase() + ".png");
                         return `
                             <div class="counter-item">
-                                <img src="img/${cImg}" onerror="this.src='https://via.placeholder.com/50/222/fff?text=ITEM'">
+                                <img src="img/${cImg}" onerror="this.src='https://via.placeholder.com/35/222/fff?text=?'">
                                 <span>${counterNome}</span>
                             </div>
                         `;
@@ -210,14 +190,14 @@
         const filter = document.getElementById('hero-search').value.toLowerCase();
         const cards = document.getElementsByClassName('hero-card');
         Array.from(cards).forEach(card => {
-            card.style.display = card.innerText.toLowerCase().includes(filter) ? "" : "none";
+            const name = card.querySelector('strong').innerText.toLowerCase();
+            card.style.display = name.includes(filter) ? "" : "none";
         });
     }
 
     function clearSelection() {
         selectedEnemies = [];
         updateUI();
-        filterHeroes();
     }
 
     displayHeroes();
@@ -225,6 +205,3 @@
 
 </body>
 </html>
-
-
-
