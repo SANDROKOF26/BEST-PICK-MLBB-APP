@@ -22,12 +22,12 @@
 
         #hero-search { padding: 12px; width: 95%; border-radius: 8px; border: 1px solid #444; background: #0f1015; color: white; margin-bottom: 15px; outline: none; font-size: 16px; box-sizing: border-box; }
 
-        .hero-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(70px, 1fr)); gap: 10px; padding: 10px; justify-items: center; }
+        .hero-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(75px, 1fr)); gap: 10px; padding: 10px; justify-items: center; max-height: 350px; overflow-y: auto; background: #12141a; border-radius: 10px; border: 1px solid #333; }
         .hero-card { width: 70px; text-align: center; cursor: pointer; font-size: 11px; }
-        .hero-card img { width: 60px; height: 60px; border-radius: 8px; object-fit: cover; border: 2px solid #333; }
+        .hero-card img { width: 55px; height: 55px; border-radius: 8px; object-fit: cover; border: 2px solid #333; display: block; margin: 0 auto 4px; }
         .hero-card:hover img { border-color: #ffd700; }
 
-        .counter-section { margin-top: 20px; padding: 15px; background: #111318; border-radius: 10px; }
+        .counter-section { margin-top: 20px; padding: 15px; background: #111318; border-radius: 10px; border: 1px solid #333; }
         .counter-grid { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin-top: 10px; }
     </style>
 </head>
@@ -36,7 +36,7 @@
 <div class="container">
     <div class="main-title">Best Pick MLBB</div>
     
-    <p>Time Inimigo (Selecione até 5):</p>
+    <p style="color: #888; font-size: 12px;">TIME INIMIGO (SELECIONE ATÉ 5):</p>
     <div class="slots" id="enemy-slots">
         <div class="slot" onclick="removeHero(0)">+</div>
         <div class="slot" onclick="removeHero(1)">+</div>
@@ -45,23 +45,83 @@
         <div class="slot" onclick="removeHero(4)">+</div>
     </div>
 
-    <input type="text" id="hero-search" placeholder="Buscar herói..." oninput="filterHeroes()">
+    <input type="text" id="hero-search" placeholder="🔍 Buscar herói..." oninput="filterHeroes()">
 
     <div class="hero-grid" id="hero-grid"></div>
 
     <div class="counter-section">
-        <h3>Melhores Counters Recomendados:</h3>
+        <h3 style="color: #4caf50; margin-top: 0;">MELHORES COUNTERS RECOMENDADOS</h3>
         <div class="counter-grid" id="counter-grid">Selecione heróis inimigos para ver os counters.</div>
     </div>
 </div>
 
 <script>
-    // IMPORTANTE: Ajuste o caminho da imagem ("img") para bater com a sua pasta no GitHub
+    const fallbackImg = "https://via.placeholder.com/60/222/fff?text=?";
+
     const heroesData = [
-        { name: "TIGREAL", img: "img/TIGREAL.png", counters: ["DIGGIE", "AKAI", "VALIR"] },
-        { name: "Fanny", img: "imagens/fanny.png", counters: ["Khufra", "Saber", "Chou"] },
-        { name: "Lancelot", img: "imagens/lancelot.png", counters: ["Khufra", "Phoveus", "Minsitthar"] },
-        { name: "Diggie", img: "imagens/diggie.png", counters: ["Natalia", "Helcurt", "Guinevere"] }
+        // ASSASSINOS
+        { name: "AAMON", img: "img/AAMON.png", counters: ["SABER", "RUBY", "EUDORA", "KHUFRA"] },
+        { name: "BENEDETTA", img: "img/BENEDETTA.png", counters: ["PHOVEUS", "KHUFRA", "MINSITTHAR", "SABER"] },
+        { name: "FANNY", img: "img/FANNY.png", counters: ["KHUFRA", "SABER", "FRANCO", "EUDORA"] },
+        { name: "GUSION", img: "img/GUSION.png", counters: ["LANCELOT", "CHOU", "SABER", "RUBY"] },
+        { name: "HANZO", img: "img/HANZO.png", counters: ["NATALIA", "HELCURT", "ALDOUS", "LING"] },
+        { name: "HAYABUSA", img: "img/HAYABUSA.png", counters: ["SABER", "CHOU", "KHUFRA", "CYCLOPS"] },
+        { name: "HELCURT", img: "img/HELCURT.png", counters: ["EUDORA", "SABER", "HYLOS", "BELERICK"] },
+        { name: "JOY", img: "img/JOY.png", counters: ["MINSITTHAR", "PHOVEUS", "FRANCO", "KAJA"] },
+        { name: "KARINA", img: "img/KARINA.png", counters: ["EUDORA", "SABER", "X.BORG", "LANCELOT"] },
+        { name: "LANCELOT", img: "img/LANCELOT.png", counters: ["KHUFRA", "CHOU", "RUBY", "MARTIS"] },
+        { name: "LING", img: "img/LING.png", counters: ["KHUFRA", "SABER", "MINSITTHAR", "EUDORA"] },
+        { name: "NATALIA", img: "img/NATALIA.png", counters: ["RAFAELA", "HYLOS", "SABER", "YI SUN-SHIN"] },
+        { name: "NOLAN", img: "img/NOLAN.png", counters: ["FRANCO", "KAJA", "SABER", "KHUFRA"] },
+        { name: "SABER", img: "img/SABER.png", counters: ["ARGUS", "GATOTKACA", "HYLOS"] },
+        { name: "SELENA", img: "img/SELENA.png", counters: ["DIGGIE", "KAJA", "FRANCO", "PHARSA"] },
+        { name: "SUYOU", img: "img/SUYOU.png", counters: ["KAJA", "FRANCO", "TERIZLA", "ARLOTT"] },
+
+        // ATIRADORES
+        { name: "BEATRIX", img: "img/BEATRIX.png", counters: ["NATALIA", "SABER", "LANCELOT", "CHOU"] },
+        { name: "BRODY", img: "img/BRODY.png", counters: ["SABER", "NATALIA", "LANCELOT", "LING"] },
+        { name: "BRUNO", img: "img/BRUNO.png", counters: ["LESLEY", "CLAUDE", "NATALIA", "HELCURT"] },
+        { name: "CLAUDE", img: "img/CLAUDE.png", counters: ["LESLEY", "SABER", "FRANCO", "IRITHEL"] },
+        { name: "CLINT", img: "img/CLINT.png", counters: ["BRUNO", "NATAN", "SABER", "NATALIA"] },
+        { name: "GRANGER", img: "img/GRANGER.png", counters: ["LANCELOT", "SABER", "CHOU", "NATALIA"] },
+        { name: "HANABI", img: "img/HANABI.png", counters: ["NATALIA", "SABER", "LANCELOT", "LING"] },
+        { name: "IRITHEL", img: "img/IRITHEL.png", counters: ["LESLEY", "SABER", "NATALIA", "BRUNO"] },
+        { name: "IXIA", img: "img/IXIA.png", counters: ["LANCELOT", "SABER", "NATALIA", "LING"] },
+        { name: "KARRIE", img: "img/KARRIE.png", counters: ["LESLEY", "SABER", "NATALIA", "LANCELOT"] },
+        { name: "LAYLA", img: "img/LAYLA.png", counters: ["SABER", "NATALIA", "LANCELOT", "LING"] },
+        { name: "LESLEY", img: "img/LESLEY.png", counters: ["SABER", "NATALIA", "LANCELOT", "HELCURT"] },
+        { name: "MELISSA", img: "img/MELISSA.png", counters: ["SABER", "FRANCO", "LESLEY", "NATALIA"] },
+        { name: "MIYA", img: "img/MIYA.png", counters: ["SABER", "NATALIA", "LANCELOT", "LING"] },
+        { name: "MOSKOV", img: "img/MOSKOV.png", counters: ["LESLEY", "SABER", "NATALIA", "EUDORA"] },
+        { name: "NATAN", img: "img/NATAN.png", counters: ["SABER", "NATALIA", "LANCELOT", "LING"] },
+        { name: "WANWAN", img: "img/WANWAN.png", counters: ["SABER", "FRANCO", "KAJA", "KHUFRA"] },
+
+        // LUTADORES
+        { name: "ALDOUS", img: "img/ALDOUS.png", counters: ["AKAI", "CHOU", "KAJA", "FRANCO"] },
+        { name: "ALPHA", img: "img/ALPHA.png", counters: ["CHOU", "RUBY", "BAXIA", "DYRROTH"] },
+        { name: "DYRROTH", img: "img/DYRROTH.png", counters: ["CHOU", "RUBY", "ARGUS", "FREYA"] },
+        { name: "MARTIS", img: "img/MARTIS.png", counters: ["CHOU", "RUBY", "PHOVEUS", "KAJA"] },
+        { name: "PAQUITO", img: "img/PAQUITO.png", counters: ["CHOU", "RUBY", "PHOVEUS", "KAJA"] },
+        { name: "YU ZHONG", img: "img/YU_ZHONG.png", counters: ["BAXIA", "DYRROTH", "KARRIE"] },
+        { name: "CHOU", img: "img/CHOU.png", counters: ["KHUFRA", "RUBY", "GATOTKACA", "PHOVEUS"] },
+        { name: "TERIZLA", img: "img/TERIZLA.png", counters: ["KARRIE", "VALIR", "LUNOX"] },
+        { name: "LAPU-LAPU", img: "img/LAPU-LAPU.png", counters: ["ESMERALDA", "RUBY", "CHOU"] },
+        { name: "SUN", img: "img/SUN.png", counters: ["X.BORG", "RUBY", "SILVANNA", "AULUS"] },
+
+        // TANQUES
+        { name: "TIGREAL", img: "img/TIGREAL.png", counters: ["DIGGIE", "CHOU", "FRANCO", "KAJA"] },
+        { name: "AKAI", img: "img/AKAI.png", counters: ["DIGGIE", "VALIR", "KARRIE", "CLAUDE"] },
+        { name: "FRANCO", img: "img/FRANCO.png", counters: ["DIGGIE", "CHOU", "RUBY", "HYLOS"] },
+        { name: "KHUFRA", img: "img/KHUFRA.png", counters: ["FRANCO", "KAJA", "DIGGIE", "VALIR"] },
+        { name: "ATLAS", img: "img/ATLAS.png", counters: ["DIGGIE", "CHOU", "FRANCO"] },
+        { name: "BELERICK", img: "img/BELERICK.png", counters: ["KARRIE", "LUNOX", "VALIR"] },
+
+        // MAGOS
+        { name: "VEXANA", img: "img/VEXANA.png", counters: ["SABER", "NATALIA", "LANCELOT", "LING"] },
+        { name: "NANA", img: "img/NANA.png", counters: ["SABER", "NATALIA", "LANCELOT", "LING"] },
+        { name: "VALIR", img: "img/VALIR.png", counters: ["SABER", "NATALIA", "LANCELOT", "LING"] },
+        { name: "EUDORA", img: "img/EUDORA.png", counters: ["CHOU", "LANCELOT", "BENEDETTA"] },
+        { name: "AURORA", img: "img/AURORA.png", counters: ["SABER", "HELCURT", "NATALIA"] }
     ];
 
     let selectedHeroes = [null, null, null, null, null];
@@ -73,9 +133,8 @@
             const card = document.createElement('div');
             card.className = 'hero-card';
             card.onclick = () => selectHero(hero);
-            // O atributo onerror previne que o app quebre se a imagem sumir
             card.innerHTML = `
-                <img src="${hero.img}" alt="${hero.name}" onerror="this.src='https://placeholder.com{hero.name}'">
+                <img src="${hero.img}" alt="${hero.name}" onerror="this.onerror=null; this.src='${fallbackImg}'">
                 <div>${hero.name}</div>
             `;
             grid.appendChild(card);
@@ -90,7 +149,7 @@
 
     function selectHero(hero) {
         const emptySlot = selectedHeroes.indexOf(null);
-        if (emptySlot !== -1 && !selectedHeroes.includes(hero.name)) {
+        if (emptySlot !== -1 && !selectedHeroes.includes(hero)) {
             selectedHeroes[emptySlot] = hero;
             updateSlots();
             calculateCounters();
@@ -108,7 +167,7 @@
         selectedHeroes.forEach((hero, i) => {
             if (hero) {
                 slots[i].className = 'slot filled';
-                slots[i].innerHTML = `<img src="${hero.img}" alt="${hero.name}" onerror="this.src='https://placeholder.com{hero.name}'">`;
+                slots[i].innerHTML = `<img src="${hero.img}" alt="${hero.name}" onerror="this.onerror=null; this.src='${fallbackImg}'">`;
             } else {
                 slots[i].className = 'slot';
                 slots[i].innerHTML = '+';
@@ -129,27 +188,25 @@
             return;
         }
 
-        // Conta a frequência de cada counter para priorizar os melhores
         let counts = {};
         allCounters.forEach(c => counts[c] = (counts[c] || 0) + 1);
         let sortedCounters = Object.keys(counts).sort((a,b) => counts[b] - counts[a]);
 
         counterGrid.innerHTML = '';
-        sortedCounters.slice(0, 5).forEach(counterName => {
-            const heroObj = heroesData.find(h => h.name === counterName);
-            const imgPath = heroObj ? heroObj.img : `https://placeholder.com{counterName}`;
+        sortedCounters.slice(0, 6).forEach(counterName => {
+            const heroObj = heroesData.find(h => h.name.toUpperCase() === counterName.toUpperCase());
+            const imgPath = heroObj ? heroObj.img : `img/${counterName}.png`;
             
             const div = document.createElement('div');
             div.className = 'hero-card';
             div.innerHTML = `
-                <img src="${imgPath}" alt="${counterName}" onerror="this.src='https://placeholder.com{counterName}'">
+                <img src="${imgPath}" alt="${counterName}" onerror="this.onerror=null; this.src='${fallbackImg}'">
                 <div>${counterName}</div>
             `;
             counterGrid.appendChild(div);
         });
     }
 
-    // Inicializa a lista ao carregar a página
     renderHeroGrid();
 </script>
 
